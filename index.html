@@ -32,7 +32,6 @@ body {
   overflow-x: hidden;
 }
 
-/* star background */
 body::before {
   content: '';
   position: fixed;
@@ -54,9 +53,6 @@ body::before {
   z-index: 0;
 }
 
-/* =====================
-   NAVIGATION
-   ===================== */
 nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -90,9 +86,6 @@ nav {
 }
 .nav-links a:hover { color: var(--gold-light); }
 
-/* =====================
-   HERO
-   ===================== */
 .hero {
   min-height: 100vh;
   display: grid;
@@ -172,7 +165,6 @@ nav {
 }
 .btn-ghost:hover { background: rgba(212,160,23,0.12); transform: translateY(-2px); }
 
-/* skill tags */
 .hero-tags {
   display: flex;
   flex-wrap: wrap;
@@ -188,20 +180,31 @@ nav {
   color: var(--gold-pale);
 }
 
-/* moon float animation */
-.moon-wrap { flex-shrink: 0; width: 220px; height: 220px; }
+.moon-wrap { flex-shrink: 0; width: 260px; height: 280px; }
 .moon-svg {
-  width: 220px; height: 220px;
-  animation: moonFloat 6s ease-in-out infinite;
+  width: 260px; height: 280px;
+  animation: starFloat 6s ease-in-out infinite;
 }
-@keyframes moonFloat {
+@keyframes starFloat {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-12px); }
 }
 
-/* =====================
-   SHARED SECTION STYLES
-   ===================== */
+.eye-l { animation: blink 4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.eye-r { animation: blink 4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; animation-delay: 0.05s; }
+.sp1 { animation: sparklePulse 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.sp2 { animation: sparklePulse 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; animation-delay: 1s; }
+.sp3 { animation: sparklePulse 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; animation-delay: 1.5s; }
+
+@keyframes blink {
+  0%,88%,100% { transform: scaleY(1); }
+  94%          { transform: scaleY(0.08); }
+}
+@keyframes sparklePulse {
+  0%,100% { opacity: 0.4; transform: scale(0.8); }
+  50%      { opacity: 1;   transform: scale(1.2); }
+}
+
 .divider {
   border: none;
   border-top: 1px solid var(--border);
@@ -236,9 +239,6 @@ section {
   line-height: 1.15;
 }
 
-/* =====================
-   ABOUT SECTION
-   ===================== */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -269,9 +269,6 @@ section {
 .h-title { font-size: 0.88rem; font-weight: 500; color: var(--cream); margin-bottom: 0.2rem; }
 .h-desc  { font-size: 0.78rem; color: var(--muted); }
 
-/* =====================
-   PROJECTS SECTION
-   ===================== */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -346,7 +343,7 @@ section {
 .project-link:hover { opacity: 0.7; }
 
 /* =====================
-   PHOTOGRAPHY SECTION
+   CAROUSEL
    ===================== */
 .photo-intro {
   font-size: 0.95rem;
@@ -357,54 +354,122 @@ section {
   line-height: 1.8;
 }
 
-.photo-grid {
-  display: grid;
-  /* 3 columns — change to 2 if you prefer bigger photos */
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.85rem;
-}
+.carousel-wrap { width: 100%; }
 
-/* =====================
-   HOW TO ADD YOUR PHOTOS:
-   Each .photo-slot is one image.
-   Replace the background-color with:
-     background-image: url('your-photo.jpg');
-   and set background-size: cover; background-position: center;
-   You can also delete the .photo-placeholder div inside — that's just the temp icon.
-   To add more photos: copy a whole <div class="photo-slot"> block and paste it in.
-   ===================== */
-.photo-slot {
-  aspect-ratio: 1 / 1;        /* square crop — change to 4/3 or 3/2 for landscape */
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--card);
-  border: 1px solid var(--border);
+.carousel {
   position: relative;
-  transition: transform 0.2s, border-color 0.2s;
-  cursor: pointer;
-}
-.photo-slot:hover { transform: scale(1.02); border-color: rgba(212,160,23,0.4); }
-
-/* the placeholder content — delete this once you add real images */
-.photo-placeholder {
-  width: 100%;
-  height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  opacity: 0.3;
+  height: 420px;
+  overflow: hidden;
 }
-.photo-placeholder span { font-size: 1.5rem; }
-.photo-placeholder p { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em; }
 
-/* tall slot spans 2 rows — gives the grid some variety */
-.photo-slot.tall { grid-row: span 2; aspect-ratio: auto; min-height: 300px; }
+.carousel-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+}
 
-/* =====================
-   CONTACT SECTION
-   ===================== */
+.slide {
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+.slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.slide.center {
+  width: 320px;
+  height: 380px;
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+  border: 1.5px solid rgba(212,160,23,0.6);
+}
+
+.slide.side {
+  width: 220px;
+  height: 280px;
+  opacity: 0.45;
+  transform: scale(0.88);
+  z-index: 1;
+  filter: brightness(0.6);
+}
+
+.slide.far {
+  width: 160px;
+  height: 200px;
+  opacity: 0.2;
+  transform: scale(0.75);
+  z-index: 0;
+  filter: brightness(0.4);
+}
+
+.slide.placeholder {
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(212,160,23,0.3);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(13,13,26,0.8);
+  border: 1px solid rgba(212,160,23,0.3);
+  color: var(--gold);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.carousel-btn:hover { background: rgba(212,160,23,0.15); border-color: rgba(212,160,23,0.7); }
+.carousel-btn.prev { left: 0; }
+.carousel-btn.next { right: 0; }
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 1.2rem;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(212,160,23,0.25);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.dot.active {
+  background: var(--gold);
+  width: 18px;
+  border-radius: 3px;
+}
+
 .contact-inner { text-align: center; max-width: 520px; margin: 0 auto; }
 .contact-inner p { color: var(--muted); font-weight: 300; margin-bottom: 2rem; font-size: 0.95rem; }
 .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
@@ -440,9 +505,6 @@ footer {
   border-top: 1px solid var(--border);
 }
 
-/* =====================
-   ANIMATIONS
-   ===================== */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -458,10 +520,6 @@ footer {
 </head>
 <body>
 
-<!-- =====================
-     NAVIGATION
-     Add "Photography" link here if you want it in the nav
-     ===================== -->
 <nav>
   <span class="nav-name">✦ Summayah Javed</span>
   <ul class="nav-links">
@@ -472,22 +530,14 @@ footer {
   </ul>
 </nav>
 
-<!-- =====================
-     HERO
-     ===================== -->
 <div style="padding: 0; position: relative; z-index: 1;">
   <div class="hero">
     <div class="hero-left">
       <p class="hero-eyebrow">✦ Computing Science · University of Alberta</p>
-
-      <!-- HEADLINE — this is intentionally simple, just your name + what you do -->
       <h1>Hi, I'm<br><em>Summayah.</em></h1>
-
-      <!-- BIO — your words, mostly untouched -->
       <p class="hero-desc">
-        I'm a second year CS student at the University of Alberta. I like building things. Outside of university, I'm usually taking photos of whatever catches my eye..
+        I'm a second year CS student at the University of Alberta. I like building things. Outside of university, I'm usually taking photos of whatever catches my eye.
       </p>
-
       <div class="hero-actions">
         <a class="btn-primary" href="#projects">See my work</a>
         <a class="btn-ghost" href="#contact">Get in touch</a>
@@ -495,8 +545,6 @@ footer {
         <a class="btn-ghost" href="resume.pdf" target="_blank">Resume ↓</a>
         -->
       </div>
-
-      <!-- SKILL TAGS — add/remove as you like -->
       <div class="hero-tags">
         <span class="tag">Android</span>
         <span class="tag">Firebase</span>
@@ -507,44 +555,25 @@ footer {
       </div>
     </div>
 
-    <!-- moon + cat illustration -->
     <div class="moon-wrap">
-      <svg class="moon-svg" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="moonGrad" cx="40%" cy="40%" r="60%">
-            <stop offset="0%"   stop-color="#F0C040"/>
-            <stop offset="60%"  stop-color="#D4A017"/>
-            <stop offset="100%" stop-color="#A07800"/>
-          </radialGradient>
-        </defs>
-        <circle cx="100" cy="120" r="78" fill="url(#moonGrad)"/>
-        <circle cx="138" cy="100" r="68" fill="#0D0D1A"/>
-        <ellipse cx="82" cy="110" rx="5" ry="3.5" fill="#A07800" opacity="0.6"/>
-        <path d="M70 125 Q80 130 92 127" stroke="#A07800" stroke-width="1.5" fill="none" opacity="0.5" stroke-linecap="round"/>
-        <circle cx="78" cy="95" r="1.5" fill="#A07800" opacity="0.5"/>
-        <circle cx="90" cy="140" r="1" fill="#A07800" opacity="0.4"/>
-        <ellipse cx="96" cy="65" rx="16" ry="18" fill="#0D0D1A"/>
-        <circle cx="96" cy="42" r="14" fill="#0D0D1A"/>
-        <polygon points="84,32 80,18 92,30" fill="#0D0D1A"/>
-        <polygon points="108,32 112,18 100,30" fill="#0D0D1A"/>
-        <polygon points="85,31 82,21 91,30" fill="#2D1030" opacity="0.7"/>
-        <polygon points="107,31 110,21 101,30" fill="#2D1030" opacity="0.7"/>
-        <ellipse cx="90" cy="42" rx="3.5" ry="4" fill="#F0C040"/>
-        <ellipse cx="102" cy="42" rx="3.5" ry="4" fill="#F0C040"/>
-        <ellipse cx="90" cy="42" rx="1.5" ry="3.5" fill="#0D0D1A"/>
-        <ellipse cx="102" cy="42" rx="1.5" ry="3.5" fill="#0D0D1A"/>
-        <circle cx="91.5" cy="40" r="1" fill="white" opacity="0.7"/>
-        <circle cx="103.5" cy="40" r="1" fill="white" opacity="0.7"/>
-        <polygon points="96,47 94,50 98,50" fill="#D4A0B0" opacity="0.8"/>
-        <line x1="70" y1="48" x2="87" y2="49" stroke="#F5E090" stroke-width="0.8" opacity="0.6"/>
-        <line x1="70" y1="52" x2="87" y2="51" stroke="#F5E090" stroke-width="0.8" opacity="0.6"/>
-        <line x1="105" y1="49" x2="122" y2="48" stroke="#F5E090" stroke-width="0.8" opacity="0.6"/>
-        <line x1="105" y1="51" x2="122" y2="52" stroke="#F5E090" stroke-width="0.8" opacity="0.6"/>
-        <path d="M80 80 Q60 90 62 110 Q64 125 76 120" stroke="#0D0D1A" stroke-width="5" fill="none" stroke-linecap="round"/>
-        <text x="168" y="55"  font-size="10" fill="#F0C040" opacity="0.9">✦</text>
-        <text x="30"  y="75"  font-size="7"  fill="#F0C040" opacity="0.6">✦</text>
-        <text x="155" y="150" font-size="8"  fill="#F0C040" opacity="0.5">✦</text>
-        <text x="48"  y="170" font-size="6"  fill="#F0C040" opacity="0.4">✦</text>
+      <svg class="moon-svg" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="170,42 200,130 295,130 220,185 248,275 170,220 92,275 120,185 45,130 140,130" fill="#D4A017"/>
+        <ellipse cx="170" cy="170" rx="38" ry="32" fill="#0D0D1A"/>
+        <polygon points="138,155 140,132 162,150" fill="#0D0D1A"/>
+        <polygon points="202,155 200,132 178,150" fill="#0D0D1A"/>
+        <g class="eye-l">
+          <ellipse cx="161" cy="170" rx="5" ry="6" fill="#F0C040"/>
+          <ellipse cx="161" cy="171" rx="2" ry="5" fill="#0D0D1A"/>
+          <circle cx="163" cy="167" r="1.5" fill="white" opacity="0.9"/>
+        </g>
+        <g class="eye-r">
+          <ellipse cx="179" cy="170" rx="5" ry="6" fill="#F0C040"/>
+          <ellipse cx="179" cy="171" rx="2" ry="5" fill="#0D0D1A"/>
+          <circle cx="181" cy="167" r="1.5" fill="white" opacity="0.9"/>
+        </g>
+        <text class="sp1" x="290" y="100" font-size="13" fill="#F0C040" text-anchor="middle">✦</text>
+        <text class="sp2" x="55"  y="115" font-size="9"  fill="#F0C040" text-anchor="middle">✦</text>
+        <text class="sp3" x="272" y="265" font-size="11" fill="#F0C040" text-anchor="middle">✦</text>
       </svg>
     </div>
   </div>
@@ -552,22 +581,15 @@ footer {
 
 <hr class="divider">
 
-<!-- =====================
-     ABOUT SECTION
-     ===================== -->
 <section id="about">
   <p class="section-label">✦ About</p>
   <h2 class="section-title">A bit about me.</h2>
   <div class="about-grid">
-
     <div class="about-text">
-      <!-- rewrite this however you want — these are just starting points -->
       <p>I'm Summayah, a second year Computing Science student at the University of Alberta. I like building things I can actually see helping someone, even if it's just a little bit.</p>
       <p>My biggest project so far is Faro — a two-app dementia care suite my team built in 24 hours at AdaHacks 2026. We won first place and Best Community Impact.</p>
       <p>Outside of school I'm usually behind a camera, reading, or looking for street cats (slim pickings in Edmonton, unfortunately).</p>
     </div>
-
-    <!-- highlight cards — add/remove freely -->
     <div>
       <div class="highlight-card">
         <span class="h-icon">✦</span>
@@ -586,7 +608,7 @@ footer {
       <div class="highlight-card">
         <span class="h-icon">◇</span>
         <div>
-          <div class="h-title">AV Associate · NAThacks</div>
+          <div class="h-title">AV Associate · NAT</div>
           <div class="h-desc">Volunteer photographer for Edmonton's student hackathon</div>
         </div>
       </div>
@@ -598,21 +620,16 @@ footer {
         </div>
       </div>
     </div>
-
   </div>
 </section>
 
 <hr class="divider">
 
-<!-- =====================
-     PROJECTS SECTION
-     ===================== -->
 <section id="projects">
   <p class="section-label">✦ Projects</p>
   <h2 class="section-title">Things I've built.</h2>
   <div class="projects-grid">
 
-    <!-- FARO -->
     <div class="project-card faro">
       <span class="project-glyph">◇</span>
       <h3>Faro</h3>
@@ -624,10 +641,9 @@ footer {
         <span class="tech-pill">Firestore</span>
         <span class="tech-pill">Realtime DB</span>
       </div>
-         <a href="https://github.com/summayahjoyia/FaroByBonita" target="_blank" class="project-link">Check it out! ↗</a>
+      <a href="https://github.com/summayahjoyia/FaroByBonita" target="_blank" class="project-link">Check it out! ↗</a>
     </div>
 
-    <!-- ABACUS -->
     <div class="project-card abacus">
       <span class="project-glyph">✦</span>
       <h3>Abacus</h3>
@@ -639,161 +655,142 @@ footer {
         <span class="tech-pill">Jetpack Nav</span>
         <span class="tech-pill">Material 3</span>
       </div>
-          <a href="https://github.com/CMPUT301W26abacus/Abacus-app" target="_blank" class="project-link">Check it out! ↗</a>
+      <a href="https://github.com/CMPUT301W26abacus/Abacus-app" target="_blank" class="project-link">Check it out! ↗</a>
     </div>
 
-    <!-- QURAN EXTENSION -->
-  <div class="project-card quran">
-    <span class="project-glyph">☽</span>
-    <h3>Quran: Verse of the Day</h3>
-    <p class="project-tagline">Chrome extension</p>
-    <p>I'm on my laptop constantly, so why not make that time count. A new verse every day, with translation and explanation, every time you open a new tab, without replacing your regular home page. A small way to stay close to the Quran even when you're not actively reading it. Customizable too, so it actually feels like yours. Open to feedback, please dm me if you have any!</p>
-    <div class="tech-stack">
-      <span class="tech-pill">Vanilla JS</span>
-      <span class="tech-pill">Manifest V3</span>
-      <span class="tech-pill">IndexedDB</span>
-      <span class="tech-pill">REST APIs</span>
+    <div class="project-card quran">
+      <span class="project-glyph">☽</span>
+      <h3>Quran: Verse of the Day</h3>
+      <p class="project-tagline">Chrome extension</p>
+      <p>I'm on my laptop constantly, so why not make that time count. A new verse every day, with translation and explanation, every time you open a new tab, without replacing your regular home page. A small way to stay close to the Quran even when you're not actively reading it. Customizable too, so it actually feels like yours. Open to feedback, please dm me if you have any!</p>
+      <div class="tech-stack">
+        <span class="tech-pill">Vanilla JS</span>
+        <span class="tech-pill">Manifest V3</span>
+        <span class="tech-pill">IndexedDB</span>
+        <span class="tech-pill">REST APIs</span>
+      </div>
+      <a href="https://chromewebstore.google.com/detail/ekpgdjnhaihaeibmmenjicaonegbnlgf?utm_source=item-share-cb" target="_blank" class="project-link">View on Chrome Web Store ↗</a>
     </div>
-    <a href="https://chromewebstore.google.com/detail/ekpgdjnhaihaeibmmenjicaonegbnlgf?utm_source=item-share-cb" target="_blank" class="project-link">View on Chrome Web Store ↗</a>
-  </div>
-
-    <!-- TO ADD A PROJECT: copy a card block above, paste here,
-         give it a new class e.g. "project-card newproject",
-         add a gradient for it in the CSS under .project-card::before -->
 
   </div>
 </section>
 
 <hr class="divider">
 
-<!-- =====================
-     PHOTOGRAPHY SECTION
-     ===================== -->
 <section id="photography">
   <p class="section-label">✦ Photography</p>
   <h2 class="section-title">Through the lens.</h2>
-
   <p class="photo-intro">
-    I shoot everything: events, people, whatever catches my eye. Currently an AV Associate for NAT and always looking for cats (Edmonton is letting me down on that front).
+    I shoot everything: events, people, whatever catches my eye. Currently an AV Associate for NAThacks and always looking for cats (Edmonton is letting me down on that front).
   </p>
 
-  <!-- =====================
-       PHOTO GRID
-       To add a real photo to any slot:
-       1. Put your image file in the same folder as index.html
-       2. Replace the style on the .photo-slot div like this:
-          style="background-image: url('your-photo.jpg'); background-size: cover; background-position: center;"
-       3. Delete the <div class="photo-placeholder"> inside that slot
-       4. Add more slots by copying a <div class="photo-slot"> block
-
-       The .tall class makes a slot double height — good for portrait photos.
-       ===================== -->
-  <div class="photo-grid">
-
-    <!-- slot 1 — tall, good for a portrait or vertical shot -->
-    <div class="photo-slot tall">
-      <div class="photo-placeholder">
-        <span>📷</span>
-        <p>your photo here</p>
-      </div>
+  <div class="carousel-wrap">
+    <div class="carousel">
+      <button class="carousel-btn prev" onclick="move(-1)">&#8592;</button>
+      <div class="carousel-track" id="track"></div>
+      <button class="carousel-btn next" onclick="move(1)">&#8594;</button>
     </div>
-
-    <!-- slot 2 -->
-    <div class="photo-slot">
-      <div class="photo-placeholder">
-        <span>📷</span>
-        <p>your photo here</p>
-      </div>
-    </div>
-
-    <!-- slot 3 -->
-    <div class="photo-slot">
-      <div class="photo-placeholder">
-        <span>📷</span>
-        <p>your photo here</p>
-      </div>
-    </div>
-
-    <!-- slot 4 -->
-    <div class="photo-slot">
-      <div class="photo-placeholder">
-        <span>📷</span>
-        <p>your photo here</p>
-      </div>
-    </div>
-
-    <!-- slot 5 -->
-    <div class="photo-slot">
-      <div class="photo-placeholder">
-        <span>📷</span>
-        <p>your photo here</p>
-      </div>
-    </div>
-
-    <!-- slot 6 — tall -->
-    <div class="photo-slot tall">
-      <div class="photo-placeholder">
-        <span>📷</span>
-        <p>your photo here</p>
-      </div>
-    </div>
-
-    <!-- slot 7 -->
-    <div class="photo-slot">
-      <div class="photo-placeholder">
-        <span>📷</span>
-        <p>your photo here</p>
-      </div>
-    </div>
-
-    <!-- slot 8 -->
-    <div class="photo-slot">
-      <div class="photo-placeholder">
-        <span>📷</span>
-        <p>your photo here</p>
-      </div>
-    </div>
-
+    <div class="carousel-dots" id="dots"></div>
   </div>
 </section>
 
 <hr class="divider">
 
-<!-- =====================
-     CONTACT SECTION
-     Update your email, LinkedIn, and GitHub below
-     ===================== -->
 <section id="contact">
   <div class="contact-inner">
     <p class="section-label">✦ Contact</p>
     <h2 class="section-title">Say hi.</h2>
-    <!-- UPDATE this line -->
     <p>Open to internships, collabs, or just a chat. My inbox is friendly.</p>
     <div class="contact-links">
-
-      <!-- UPDATE: your email -->
       <a class="contact-link" href="mailto:summayah@ualberta.ca">
         <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Email
       </a>
-
-      <!-- UPDATE: your LinkedIn URL -->
       <a class="contact-link" href="https://www.linkedin.com/in/summayah-j-41b58b36b" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
         LinkedIn
       </a>
-
-      <!-- UPDATE: your GitHub URL -->
       <a class="contact-link" href="https://github.com/summayahjoyia" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
         GitHub
       </a>
-
     </div>
   </div>
 </section>
 
 <footer>✦ Summayah Javed ✦</footer>
+
+<script>
+  // =====================
+  // ADD YOUR PHOTOS HERE
+  // Just add your filenames to this array.
+  // Make sure the files are in the same folder as index.html.
+  // =====================
+  const photos = [
+    'fields.jpeg',
+    'car.jpeg',
+    'mountain.jpeg',
+    'luna.jpeg','construction.jpeg', 'lunabw.jpeg', 'schoolcat.jpeg'
+    // 'photo4.jpg',
+    // 'photo5.jpg',
+    // keep adding as many as you want!
+  ];
+
+  let current = 0;
+  let autoTimer;
+
+  function render() {
+    const track = document.getElementById('track');
+    const dots = document.getElementById('dots');
+    const n = photos.length;
+
+    track.innerHTML = '';
+    dots.innerHTML = '';
+
+    const positions = [-2, -1, 0, 1, 2];
+    positions.forEach(offset => {
+      const idx = ((current + offset) % n + n) % n;
+      const slide = document.createElement('div');
+      const cls = offset === 0 ? 'center' : Math.abs(offset) === 1 ? 'side' : 'far';
+      slide.className = `slide ${cls}`;
+
+      const img = document.createElement('img');
+      img.src = photos[idx];
+      img.alt = photos[idx];
+      img.onerror = function() {
+        slide.classList.add('placeholder');
+        slide.innerHTML = photos[idx];
+      };
+      slide.appendChild(img);
+
+      if (offset !== 0) {
+        slide.onclick = () => { current = idx; render(); resetTimer(); };
+      }
+      track.appendChild(slide);
+    });
+
+    photos.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === current ? ' active' : '');
+      dot.onclick = () => { current = i; render(); resetTimer(); };
+      dots.appendChild(dot);
+    });
+  }
+
+  function move(dir) {
+    current = ((current + dir) % photos.length + photos.length) % photos.length;
+    render();
+    resetTimer();
+  }
+
+  function resetTimer() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => move(1), 3500);
+  }
+
+  render();
+  resetTimer();
+</script>
 
 </body>
 </html>
